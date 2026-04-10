@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>통합모델 × SD 통합시트 | 링크형 발표자료</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --bg-strong: #eaf0f8;
+      --surface: rgba(255,255,255,0.78);
+      --surface-strong: rgba(255,255,255,0.9);
+      --ink: #0f172a;
+      --muted: #5f6b7a;
+      --line: rgba(255,255,255,0.7);
+      --accent: #1d4ed8;
+      --accent-soft: rgba(29,78,216,0.1);
+      --accent-2: #0f766e;
+      --warn: #b45309;
+      --shadow-xl: 0 28px 90px rgba(15, 23, 42, 0.12);
+      --shadow-lg: 0 20px 52px rgba(15, 23, 42, 0.08);
+      --shadow-md: 0 12px 30px rgba(15, 23, 42, 0.06);
+      --radius-xl: 34px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --max: 1320px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Pretendard", "Inter", "Noto Sans KR", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(29,78,216,0.08), transparent 20%),
+        radial-gradient(circle at 85% 10%, rgba(255,255,255,0.92), transparent 18%),
+        linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    p { margin: 0; }
+    strong { font-weight: 800; }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(248,251,255,0.68);
+      backdrop-filter: blur(20px) saturate(150%);
+      -webkit-backdrop-filter: blur(20px) saturate(150%);
+      border-bottom: 1px solid rgba(255,255,255,0.72);
+    }
+
+    .topbar-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .deck-nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .deck-nav a {
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.52);
+      border: 1px solid rgba(255,255,255,0.62);
+    }
+
+    .slide {
+      min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      align-items: center;
+      padding: 96px 24px 40px;
+    }
+
+    .frame {
+      width: 100%;
+      max-width: var(--max);
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 40px;
+      backdrop-filter: blur(26px) saturate(150%);
+      -webkit-backdrop-filter: blur(26px) saturate(150%);
+      box-shadow: var(--shadow-xl);
+      padding: 38px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .frame::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.95), transparent);
+    }
+
+    .slide-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 26px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .slide-no {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(17,24,39,0.06);
+      color: var(--ink);
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    h1, h2 {
+      margin: 0;
+      letter-spacing: -0.06em;
+      line-height: 1.02;
+      font-weight: 800;
+    }
+
+    h1 { font-size: clamp(42px, 6vw, 78px); max-width: 1040px; }
+    h2 { font-size: clamp(34px, 4.8vw, 58px); max-width: 980px; }
+
+    .lead {
+      margin-top: 18px;
+      font-size: clamp(18px, 2.2vw, 25px);
+      line-height: 1.55;
+      color: var(--muted);
+      max-width: 920px;
+    }
+
+    .statement {
+      margin-top: 24px;
+      padding: 20px 22px;
+      border-radius: var(--radius-lg);
+      background: var(--surface-strong);
+      border: 1px solid rgba(255,255,255,0.82);
+      box-shadow: var(--shadow-md);
+      font-weight: 760;
+      line-height: 1.55;
+      max-width: 980px;
+    }
+
+    .keyline {
+      margin-top: 14px;
+      font-size: 15px;
+      color: var(--accent);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .grid-2, .grid-3, .grid-4, .flow-grid, .compare-grid {
+      display: grid;
+      gap: 18px;
+      margin-top: 28px;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .flow-grid { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+    .compare-grid { grid-template-columns: 1.05fr .2fr 1.05fr; align-items: center; }
+
+    .card, .step-card, .feature-card, .case-card, .panel {
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(255,255,255,0.74);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 22px;
+    }
+
+    .panel.dark {
+      background: linear-gradient(135deg, #0f172a 0%, #111827 54%, #1d4ed8 100%);
+      color: white;
+      border-color: rgba(255,255,255,0.08);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .card h3, .step-card h3, .feature-card h3, .case-card h3, .panel h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      line-height: 1.22;
+      letter-spacing: -0.03em;
+      font-weight: 760;
+    }
+
+    .card p, .card li, .step-card p, .feature-card p, .case-card p, .muted {
+      color: var(--muted);
+      line-height: 1.58;
+    }
+
+    ul {
+      margin: 12px 0 0;
+      padding-left: 18px;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .badge.blue { background: var(--accent-soft); color: var(--accent); }
+    .badge.teal { background: rgba(15,118,110,0.1); color: var(--accent-2); }
+    .badge.amber { background: rgba(180,83,9,0.12); color: var(--warn); }
+    .badge.dark { background: rgba(17,24,39,0.08); color: var(--ink); }
+
+    .chip-row, .pill-row, .mini-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .chip, .pill {
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.64);
+      border: 1px solid rgba(255,255,255,0.72);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .panel.dark .pill {
+      background: rgba(255,255,255,0.14);
+      border-color: rgba(255,255,255,0.12);
+      color: white;
+    }
+
+    .abp-letter {
+      font-size: 42px;
+      line-height: 1;
+      letter-spacing: -0.06em;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .arrowline {
+      margin-top: 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .step-card {
+      position: relative;
+      min-height: 200px;
+    }
+
+    .step-no {
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .connector {
+      text-align: center;
+      color: var(--accent);
+      font-weight: 900;
+      font-size: 28px;
+    }
+
+    .two-col-hero {
+      display: grid;
+      grid-template-columns: 1.25fr .9fr;
+      gap: 22px;
+      align-items: stretch;
+      margin-top: 26px;
+    }
+
+    .highlight-box {
+      padding: 24px;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(180deg, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.9) 100%);
+      border: 1px solid rgba(255,255,255,0.82);
+      box-shadow: var(--shadow-md);
+    }
+
+    .big-quote {
+      font-size: clamp(24px, 3vw, 34px);
+      line-height: 1.28;
+      letter-spacing: -0.04em;
+      font-weight: 780;
+    }
+
+    .case-card {
+      min-height: 240px;
+    }
+
+    .footer-note {
+      margin-top: 28px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 1100px) {
+      .grid-4, .flow-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .compare-grid, .two-col-hero, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+      .connector { transform: rotate(90deg); }
+    }
+
+    @media (max-width: 720px) {
+      html { scroll-snap-type: none; }
+      .slide { min-height: auto; padding-top: 88px; }
+      .frame { padding: 26px; border-radius: 28px; }
+      .topbar-inner { padding: 14px 16px; }
+      .deck-nav { display: none; }
+      .grid-4, .flow-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">통합모델 × SD 통합시트 · 링크형 발표자료</div>
+      <nav class="deck-nav">
+        <a href="#s1">01</a>
+        <a href="#s2">02</a>
+        <a href="#s3">03</a>
+        <a href="#s4">04</a>
+        <a href="#s5">05</a>
+        <a href="#s6">06</a>
+        <a href="#s7">07</a>
+        <a href="#s8">08</a>
+        <a href="#s9">09</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="slide" id="s1">
+      <div class="frame">
+        <div class="slide-meta"><span>메인 deck</span><span class="slide-no">01 / 09</span></div>
+        <div class="eyebrow">Opening</div>
+        <h1>소셜디자이너의 활동을<br>입력, 해석, 판정, 브리프, 플랫폼 조회까지 연결하는 운영 인프라</h1>
+        <p class="lead">통합모델과 통합시트는 단순 점수표가 아닙니다. 자료를 구조화하고, 사실을 추출하고, 판단 근거를 남기고, 외부 설명 가능한 브리프와 플랫폼 뷰까지 이어주는 운영 흐름입니다.</p>
+
+        <div class="two-col-hero">
+          <div class="panel dark">
+            <div class="badge dark" style="background:rgba(255,255,255,0.14); color:white;">Core proposition</div>
+            <h3 style="font-size:30px; line-height:1.15;">평가, 기록, 브리프, 외부 설명이 서로 끊기지 않는 구조</h3>
+            <p style="color:rgba(255,255,255,0.84);">Raw Input → Fact Extraction → A/B/P → Gate → Brief → Platform View. 입력과 판단과 발신이 한 번의 흐름으로 연결됩니다.</p>
+            <div class="pill-row">
+              <span class="pill">점수 통합이 아니라 의사결정 흐름 통합</span>
+              <span class="pill">사실 추출 선행</span>
+              <span class="pill">근거·상한·보완 과제 동시 기록</span>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <div class="badge blue">이 자료의 역할</div>
+            <div class="big-quote">“복잡한 운영체계를 외부가 이해 가능한 언어로 번역하는 발표자료”</div>
+            <div class="chip-row">
+              <span class="chip">외부 파트너</span>
+              <span class="chip">심사자·평가자</span>
+              <span class="chip">운영 실무자</span>
+              <span class="chip">향후 플랫폼 협업자</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="s2">
+      <div class="frame">
+        <div class="slide-meta"><span>문제 정의</span><span class="slide-no">02 / 09</span></div>
+        <div class="eyebrow">Why now</div>
+        <h2>왜 이 체계가 필요한가</h2>
+        <p class="lead">문제는 점수 그 자체보다, 입력–해석–판정–발신이 서로 끊겨 있다는 데 있습니다.</p>
+        <div class="keyline">핵심 문제: 문서가 곧 점수가 되고, 기록과 설명이 따로 논다.</div>
+        <div class="grid-2">
+          <div class="card">
+            <span class="badge amber">기존 방식의 한계</span>
+            <h3>문서가 곧 점수가 되는 구조</h3>
+            <ul>
+              <li>신청서와 인터뷰를 바로 평가해 말 잘하는 팀이 유리해짐</li>
+              <li>기록이 많은 팀이 과대평가될 수 있음</li>
+              <li>관계형·현장형 팀은 문서 부족 때문에 과소평가되기 쉬움</li>
+              <li>평가표와 기록표, 외부 설명자료가 따로 놀아 업무가 중복됨</li>
+            </ul>
+          </div>
+          <div class="card">
+            <span class="badge teal">통합모델의 접근</span>
+            <h3>입력–사실–판단–발신을 하나의 흐름으로 연결</h3>
+            <ul>
+              <li>원자료를 먼저 등록하고 사실 추출을 거침</li>
+              <li>활동 부재와 문서 부재를 구분함</li>
+              <li>점수는 숫자만이 아니라 근거·상한·보완 과제와 함께 기록됨</li>
+              <li>최종적으로 브리프와 플랫폼 뷰까지 연결됨</li>
+            </ul>
+          </div>
+        </div>
+        <div class="statement">이 체계는 평가의 공정성만을 위한 보정장치가 아니라, 입력–해석–판정–기록–발신을 하나의 운영 흐름으로 묶는 구조입니다.</div>
+      </div>
+    </section>
+
+    <section class="slide" id="s3">
+      <div class="frame">
+        <div class="slide-meta"><span>핵심 철학</span><span class="slide-no">03 / 09</span></div>
+        <div class="eyebrow">Integrated logic</div>
+        <h2>통합모델의 기본 철학</h2>
+        <p class="lead">통합모델은 점수 통합이 아니라 의사결정 흐름 통합을 지향합니다. A, B, P는 각각 다른 질문에 답하고, Gate A → Gate B → Gate P로 연결됩니다.</p>
+        <div class="keyline">한 줄 요약: 하나의 점수표가 아니라, 세 가지 판단 체계의 연결 구조입니다.</div>
+        <div class="grid-3">
+          <div class="card">
+            <div class="abp-letter">A</div>
+            <h3>선발·성장 판정</h3>
+            <p>이 팀이 어떤 문제를 어떤 방식으로 풀고 있는지, 소셜디자이너로서 어떤 성장 상태에 있는지를 읽습니다.</p>
+          </div>
+          <div class="card">
+            <div class="abp-letter">B</div>
+            <h3>거래·협력 언어 번역</h3>
+            <p>이 활동이 구매, CSR, 투자, 협력의 언어로 번역 가능한지 판단합니다.</p>
+          </div>
+          <div class="card">
+            <div class="abp-letter">P</div>
+            <h3>리포트 생산 가능성</h3>
+            <p>이 내용을 4주 내 브리프나 리포트 형태로 전환할 수 있는지 봅니다.</p>
+          </div>
+        </div>
+        <div class="arrowline">
+          <span>Gate A: 이 팀은 누구인가</span>
+          <span>→</span>
+          <span>Gate B: 거래 언어로 번역되는가</span>
+          <span>→</span>
+          <span>Gate P: 지금 외부 전달자료로 생산 가능한가</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="s4">
+      <div class="frame">
+        <div class="slide-meta"><span>판정 구조</span><span class="slide-no">04 / 09</span></div>
+        <div class="eyebrow">Gate criteria</div>
+        <h2>각 Gate는 서로 다른 질문에 답합니다</h2>
+        <p class="lead">핵심은 세 점수를 합산해 순위를 만드는 것이 아니라, 팀 정체성·거래 번역성·생산 가능성을 서로 다른 기준으로 판단하는 데 있습니다.</p>
+        <div class="keyline">즉, A·B·P는 같은 질문의 세 버전이 아니라 서로 다른 판정 축입니다.</div>
+        <div class="grid-3">
+          <div class="card">
+            <span class="badge blue">Gate A</span>
+            <h3>선발·성장 판정</h3>
+            <p>문제정의, 실험학습, 현장운영, 시민협력, 지속자원, 확산전이, 조직역량을 통해 성장 단계를 읽습니다.</p>
+            <div class="mini-row">
+              <span class="chip">S1 발굴형</span>
+              <span class="chip">S2 운영형</span>
+              <span class="chip">S3 확장형</span>
+            </div>
+          </div>
+          <div class="card">
+            <span class="badge teal">Gate B</span>
+            <h3>거래·협력 번역 판정</h3>
+            <p>이 활동이 구매, CSR, 공공협력, 투자 언어로 실제 번역 가능한지 판단합니다.</p>
+            <div class="mini-row">
+              <span class="chip">패키지화</span>
+              <span class="chip">납품 신뢰도</span>
+              <span class="chip">측정·증빙</span>
+            </div>
+          </div>
+          <div class="card">
+            <span class="badge amber">Gate P</span>
+            <h3>리포트 생산 가능성 판정</h3>
+            <p>이 팀을 4주 내 외부 전달 가능한 브리프나 리포트로 정리할 수 있는지 판단합니다.</p>
+            <div class="mini-row">
+              <span class="chip">증빙 준비도</span>
+              <span class="chip">납기 가능성</span>
+              <span class="chip">리스크 점검</span>
+            </div>
+          </div>
+        </div>
+        <div class="statement">Gate A는 “이 팀이 누구인가”, Gate B는 “이 활동이 거래 언어로 번역되는가”, Gate P는 “지금 설명 가능한 자료로 생산 가능한가”를 묻습니다.</div>
+      </div>
+    </section>
+
+    <section class="slide" id="s5">
+      <div class="frame">
+        <div class="slide-meta"><span>작동 흐름</span><span class="slide-no">05 / 09</span></div>
+        <div class="eyebrow">Workflow</div>
+        <h2>입력에서 판정까지의 작동 방식</h2>
+        <p class="lead">원자료는 곧바로 점수가 되지 않고, Fact Extraction을 거쳐 평가 가능한 근거로 전환됩니다.</p>
+        <div class="keyline">핵심 원칙: 활동 부재와 문서 부재를 구분한다.</div>
+        <div class="flow-grid">
+          <div class="step-card"><div class="step-no">01</div><h3>자료 수집</h3><p>신청서, 인터뷰, 발표자료, 증빙자료를 수집합니다.</p></div>
+          <div class="step-card"><div class="step-no">02</div><h3>Raw Input</h3><p>원자료를 등록하고 ingest 상태를 관리합니다.</p></div>
+          <div class="step-card"><div class="step-no">03</div><h3>Fact Extraction</h3><p>문장을 사건·행동 단위 사실로 구조화합니다.</p></div>
+          <div class="step-card"><div class="step-no">04</div><h3>A/B/P 정리</h3><p>점수 근거, 상한, 보완 과제를 함께 정리합니다.</p></div>
+          <div class="step-card"><div class="step-no">05</div><h3>Gate 판정</h3><p>Gate A/B/P와 stage track을 확정합니다.</p></div>
+          <div class="step-card"><div class="step-no">06</div><h3>Brief 생성</h3><p>외부 설명 가능한 문장과 제안 구조로 전환합니다.</p></div>
+          <div class="step-card"><div class="step-no">07</div><h3>Platform View</h3><p>마스터 원장과 조회용 뷰에 반영합니다.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="s6">
+      <div class="frame">
+        <div class="slide-meta"><span>체계 관계</span><span class="slide-no">06 / 09</span></div>
+        <div class="eyebrow">Workbook × Master workbook</div>
+        <h2>워크북과 통합시트의 관계</h2>
+        <p class="lead">둘은 중복 도구가 아닙니다. 워크북은 판단을 설계하는 엔진이고, 통합시트는 데이터를 축적·조회하는 마스터 원장입니다.</p>
+        <div class="keyline">워크북은 해석 구조, 통합시트는 축적 구조를 담당합니다.</div>
+        <div class="compare-grid">
+          <div class="panel">
+            <span class="badge blue">통합모델 워크북</span>
+            <h3>평가 프로토콜 엔진</h3>
+            <p class="muted">Raw Input, Fact Extraction, A/B/P, Gate, Brief 등 판단을 설계하는 계층입니다.</p>
+            <div class="pill-row">
+              <span class="pill">입력</span><span class="pill">사실 추출</span><span class="pill">점수 해석</span><span class="pill">Gate</span><span class="pill">Brief</span>
+            </div>
+          </div>
+          <div class="connector">→</div>
+          <div class="panel">
+            <span class="badge teal">SD 통합시트</span>
+            <h3>마스터 원장</h3>
+            <p class="muted">SD_Master, Activity_Log, Outputs, Outcomes, Evidence, Scores, Deals, Follow-Up 등 축적과 조회를 담당하는 계층입니다.</p>
+            <div class="pill-row">
+              <span class="pill">프로필</span><span class="pill">활동</span><span class="pill">산출</span><span class="pill">변화</span><span class="pill">증빙</span><span class="pill">조회</span>
+            </div>
+          </div>
+        </div>
+        <div class="statement">장기적으로는 워크북의 평가 로직이 통합시트 안으로 흡수되어, 하나의 플랫폼형 원장으로 수렴합니다.</div>
+      </div>
+    </section>
+
+    <section class="slide" id="s7">
+      <div class="frame">
+        <div class="slide-meta"><span>데이터 구조</span><span class="slide-no">07 / 09</span></div>
+        <div class="eyebrow">Data structure</div>
+        <h2>이 체계가 실제로 남기는 데이터</h2>
+        <p class="lead">이 구조는 숫자만 저장하지 않습니다. 활동, 변화, 증빙, 점수, 판정, 브리프를 서로 연결된 상태로 남깁니다.</p>
+        <div class="keyline">남는 것은 점수만이 아니라 판단의 맥락입니다.</div>
+        <div class="grid-4">
+          <div class="feature-card"><h3>SD_Master</h3><p>팀의 기본 프로필과 상태값</p></div>
+          <div class="feature-card"><h3>Activity_Log</h3><p>무엇을, 누구에게, 어떻게 했는지</p></div>
+          <div class="feature-card"><h3>Outputs</h3><p>산출량과 운영 규모</p></div>
+          <div class="feature-card"><h3>Outcomes</h3><p>변화와 성과</p></div>
+          <div class="feature-card"><h3>Evidence</h3><p>근거와 검증 가능성</p></div>
+          <div class="feature-card"><h3>Scores + Notes</h3><p>점수와 판단 이유</p></div>
+          <div class="feature-card"><h3>Gate Summary</h3><p>강점, 취약점, 보완 과제</p></div>
+          <div class="feature-card"><h3>Report Brief</h3><p>외부 발신 가능한 설명 구조</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" id="s8">
+      <div class="frame">
+        <div class="slide-meta"><span>사례 진입</span><span class="slide-no">08 / 09</span></div>
+        <div class="eyebrow">Sample cases</div>
+        <h2>샘플 사례로 보는 번역 방식</h2>
+        <p class="lead">통합모델과 통합시트는 추상적 구조에 머무르지 않습니다. 유형이 다른 팀들을 통해 판별력과 번역 방식을 함께 보여줍니다.</p>
+        <div class="keyline">사례는 팀 소개가 아니라, 모델의 판별력을 보여주는 증거입니다.</div>
+        <div class="grid-3">
+          <a class="case-card" href="cases/dongrak-store.html">
+            <span class="badge blue">사례 1</span>
+            <h3>동락점빵</h3>
+            <p>생활권 밀도형 / 생활 인프라 복원형</p>
+            <p style="margin-top:10px;">농촌 식품사막화와 생활권 불평등 문제를 이동장터와 생활 인프라 복원 모델로 푸는 사례.</p>
+          </a>
+          <a class="case-card" href="cases/coffeeclay.html">
+            <span class="badge teal">사례 2</span>
+            <h3>커피클레이</h3>
+            <p>패키지·확산 전환형 / 거래 번역 가능형</p>
+            <p style="margin-top:10px;">커피박 재자원화, 시니어 일자리, 교육·확산을 결합한 패키지 전환형 사례.</p>
+          </a>
+          <a class="case-card" href="cases/studio-eojunggan.html">
+            <span class="badge amber">사례 3</span>
+            <h3>스튜디오어중간</h3>
+            <p>담론·콘텐츠·회복 플랫폼형 / 발굴형</p>
+            <p style="margin-top:10px;">청년 투병 서사, 회복 공간, 매거진, 포럼, 연구를 연결하는 콘텐츠 기반 플랫폼 사례.</p>
+          </a>
+        </div>
+        <div class="statement">사례 페이지는 단순 팀 소개가 아니라, “이 통합모델이 서로 다른 유형을 어떻게 다르게 읽는가”를 보여주는 2부 자료로 이어집니다.</div>
+      </div>
+    </section>
+
+    <section class="slide" id="s9">
+      <div class="frame">
+        <div class="slide-meta"><span>활용과 다음 단계</span><span class="slide-no">09 / 09</span></div>
+        <div class="eyebrow">Outcome</div>
+        <h2>이 구조가 만들어내는 변화</h2>
+        <div class="keyline">결론: 더 적게 중복하고, 더 정확하게 판단하고, 더 설명 가능하게 연결합니다.</div>
+        <div class="grid-3">
+          <div class="card"><h3>업무 중복 감소</h3><p>평가, 기록, 외부 설명이 한 흐름으로 연결됩니다.</p></div>
+          <div class="card"><h3>판정 신뢰도 개선</h3><p>현장형 팀과 문서친화형 팀을 더 공정하게 읽을 수 있습니다.</p></div>
+          <div class="card"><h3>외부 전달력 강화</h3><p>점수표가 브리프·제안·설명자료로 이어집니다.</p></div>
+        </div>
+        <div class="panel dark" style="margin-top:26px;">
+          <div class="badge dark" style="background:rgba(255,255,255,0.14); color:white;">Next step</div>
+          <h3 style="font-size:30px; line-height:1.15;">메인 deck이 고정되면, 사례 페이지는 같은 시각 언어의 2부 슬라이드로 확장할 수 있습니다.</h3>
+          <p style="color:rgba(255,255,255,0.84);">다음 단계에서는 동락점빵, 커피클레이, 스튜디오어중간 사례를 각각 발표자료형 상세 deck으로 재구성하고, 필요하면 전체를 하나의 링크형 흐름으로 연결할 수 있습니다.</p>
+        </div>
+        <div class="footer-note">
+          <span>형식: 링크형 발표자료 / 슬라이드형 HTML</span>
+          <span>다음 권장 작업: 사례 페이지 시각 언어 통일 + 장표 흐름 재설계</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
